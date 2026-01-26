@@ -1,0 +1,23 @@
+name: Monitor Alpinestars
+on:
+  schedule:
+    - cron: '0 10 * * *' # Se ejecuta a las 10:00 AM cada día
+  workflow_dispatch: # Permite darle a un botón para probarlo manualmente
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - name: Instalar librerias
+        run: pip install requests beautifulsoup4
+      - name: Ejecutar script
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python main.py
