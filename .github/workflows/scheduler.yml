@@ -1,8 +1,8 @@
-name: Monitor Alpinestars
+name: Monitor de Precios y Stock
 on:
   schedule:
-    - cron: '0 9,15,21 * * *' # Se ejecuta a las 10:00 AM cada día
-  workflow_dispatch: # Permite darle a un botón para probarlo manualmente
+    - cron: '0 9,15,21 * * *' # Se ejecuta a las 10:00, 16:00 y 22:00 (hora España)
+  workflow_dispatch: # Permite ejecución manual
 
 jobs:
   run-scraper:
@@ -16,8 +16,10 @@ jobs:
           python-version: '3.9'
       - name: Instalar librerias
         run: pip install requests beautifulsoup4
-      - name: Ejecutar script
+      - name: Ejecutar scripts
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python main.py
+        run: |
+          python alpinestars.py
+          python zapatillas.py
